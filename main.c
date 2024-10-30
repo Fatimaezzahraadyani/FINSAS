@@ -14,6 +14,7 @@ typedef struct {
     int jour;
     int mois;
     int annee;
+
 }date;
 //les infos du chaque taches
 typedef struct {
