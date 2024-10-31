@@ -56,9 +56,6 @@ void afficher(){
     printf("les informations de(s) t%cche(s) %d : \n",131,i+1);
     printf("titre\t\tdiscription\t\tpriority\t\tstatut\t\tdate d'echeance\t \n");
     for (i=0;i<n;i++){
-    //printf("titre \t discription \t priority \t statut \t date d'echeance");
-    //printf("les informations de la t%cche num %d : \n",131,i+1);
-    //printf("titre\t\tdiscription\t\tpriority\t\tstatut\t\tdate d'echeance\t \n");
     printf("%s \t", T[i].titre);
     printf("\t%s\t\t", T[i].discription);
     printf("\t%s\t\t", T[i].priority);
