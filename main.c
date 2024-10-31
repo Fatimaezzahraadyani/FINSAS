@@ -18,9 +18,9 @@ typedef struct {
 }date;
 //les infos du chaque taches
 typedef struct {
-    char titre [20];
-    char discription [20];
-    char priority [20];
+    char titre [100];
+    char discription [40];
+    char priority [40];
     char statut [20];
 date timeline ;
 }taches;
@@ -31,16 +31,16 @@ taches T[100];
 void ajouter(){
 
     //for (i=0;i<nbrtache;i++)
-    printf("donnez les informations de la tache num %d : \n",n+1);
+    printf("donnez les informations de la t%cche num %d : \n",131,n+1);
     printf("le titre : ");
-    scanf("%s", T[n].titre);
+    scanf(" %[^\n]s", T[n].titre);
     printf("la discription : ");
-    scanf("%s", T[n].discription);
-    printf("la priority (high,meduim,low): ");
-    scanf("%s", T[n].priority);
+    scanf(" %[^\n]s", T[n].discription);
+    printf("la priorit%c (high,meduim,low): ",130);
+    scanf(" %[^\n]s", T[n].priority);
     printf("la statut (complete, incomplete) : ");
-    scanf("%s",T[n].statut);
-    printf("la date d echeance : \n");
+    scanf(" %[^\n]s",T[n].statut);
+    printf("la date d'%cch%cance : \n",130,130);
     printf("jour : ");
     scanf("%d", &T[n].timeline.jour);
     printf("mois : ");
@@ -53,31 +53,35 @@ void ajouter(){
 }
 //la fonction qui permet  d'afficher des infos sur les taches :
 void afficher(){
-
+    printf("les informations de(s) t%cche(s) %d : \n",131,i+1);
+    printf("titre\t\tdiscription\t\tpriority\t\tstatut\t\tdate d'echeance\t \n");
     for (i=0;i<n;i++){
-    printf("les informations de la tache num %d : \n",i+1);
-    printf("le titre : %s \n", T[i].titre);
-    printf("la discription : %s \n", T[i].discription);
-    printf("la priority : %s \n", T[i].priority);
-    printf("la statut : %s \n", T[i].statut);
-    printf("la date d echeance %d /%d / %d \n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
+    //printf("titre \t discription \t priority \t statut \t date d'echeance");
+    //printf("les informations de la t%cche num %d : \n",131,i+1);
+    //printf("titre\t\tdiscription\t\tpriority\t\tstatut\t\tdate d'echeance\t \n");
+    printf("%s \t", T[i].titre);
+    printf("\t%s\t\t", T[i].discription);
+    printf("\t%s\t\t", T[i].priority);
+    printf("\t%s\t\t", T[i].statut);
+    printf("%d/%d/%d\n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
 }
 }
 //la fonction qui permet de modifier des taches
 void modifier(){
-    printf("entrez l'indice de tache que vous voulez modifier : \n");
+    printf("entrez l'indice de t%cche que vous voulez modifier : \n",131);
     scanf("%d",&i);
     if (i<=0 || i>n){
     printf("L'indice que vous voulez modifier n'existe pas \n");}
     else{
             printf("vous pouvez choisir l'element que vouz voulez modifier ou modifier tout \n");
-     while(choixEdit!=6) {
-        printf("1* Editer le titre \n");
-        printf("2* Editer la discription \n");
-        printf("3* Editer la priority \n");
-        printf("4* Editer la date d'echeance \n");
-        printf("5* Editer tout \n");
-        printf("6* Quitter la liste \n");
+     while(choixEdit!=7) {
+        printf("[1] Editer le titre \n");
+        printf("[2] Editer la discription \n");
+        printf("[3] Editer la priority \n");
+        printf("[4] Editer la statut \n");
+        printf("[5] Editer la date d'echeance \n");
+        printf("[6] Editer tout \n");
+        printf("[7] Quitter la liste \n");
         printf("***entrez votre choix : \n");
         scanf("%d",&choixEdit);
         switch (choixEdit)
@@ -91,7 +95,9 @@ void modifier(){
         case 3: printf("entrer la nouvelle priority : \n");
         scanf("%s", T[i-1].priority);
         break;
-        case 4: printf("***Menu de modification date*** \n");
+        case 4: printf("entrer la nouvelle statut : \n");
+        scanf("%s", T[i-1].statut);
+        case 5: printf("**Menu de modification date** \n");
         printf("\t 1.jour : \n");
         printf("\t 2.mois : \n");
         printf("\t 3.annee : \n");
@@ -113,7 +119,7 @@ void modifier(){
             default: printf("entrez un nombre de puis la liste \n");
             break;
         }
-        case 5:
+        case 6:
             printf("Editer tout \n");
             //editer toutes les infos
         printf("entrer le nouveau titre : \n");
@@ -122,20 +128,22 @@ void modifier(){
         scanf("%s", T[i-1].discription);
         printf("entrer la nouvelle priority : \n");
         scanf("%s", T[i-1].priority);
+        printf("entrer la nouvelle statut : \n");
+        scanf("%s", T[i-1].statut);
         printf("le nouveau jour est : \n");
         scanf("%d", &T[i-1].timeline.jour);
         printf("le nouveau mois est : \n");
         scanf("%d", &T[i-1].timeline.mois);
         printf("la nouvelle annee est : \n");
         scanf("%d", &T[i-1].timeline.annee);
-
         break;
-
+        case 7 : printf("vouz avez quitter la liste \n");
+        break;
         default: printf("entrez un nombre depuis la liste , merci de resseyer \n");
         break;
         }
         }
-}
+}afficher();
 }
 void supprimer(){
     printf("entrez l'indice de tache que vous voulez supprimer : \n");
@@ -196,10 +204,46 @@ void search(){
 }
 }
 
+void Order(){
+    int j;
+    taches tmp;
+    //tmp; //tmp just pour stocker les données
+    for (i=0;i<n-1;i++){
+        for (j=i+1;j<n;j++){
+            if(T[i].timeline.annee > T[j].timeline.annee || T[i].timeline.annee==T[j].timeline.annee
+               && T[i].timeline.mois > T[j].timeline.mois || T[i].timeline.mois==T[j].timeline.mois
+                && T[i].timeline.jour > T[j].timeline.jour )
+            {
+                tmp = T[i];
+                T[i] = T[j];
+                T[j] = tmp;
+            }
+        }
+    }afficher();
+}
+void decroissant(){
+    int j;
+    taches tmp;
+    //tmp; //tmp just pour stocker les données
+    for (i=0;i<
+    n-1;i++){
+        for (j=i+1;j>n;j++){
+            if(T[i].timeline.annee < T[j].timeline.annee || T[i].timeline.annee==T[j].timeline.annee
+               && T[i].timeline.mois < T[j].timeline.mois || T[i].timeline.mois==T[j].timeline.mois
+                && T[i].timeline.jour < T[j].timeline.jour )
+            {
+                tmp = T[i];
+                T[i] = T[j];
+                T[j] = tmp;
+            }
+        }
+    }afficher();
+}
+
 
 
 int main(){
-    while(choix!=7) {
+    while(choix!=9) {
     printf("################### \t Voici la liste des operations que vous pouvez faire ###################: \n\n");
 
         printf("1* Ajouter des taches \n");
@@ -208,31 +252,26 @@ int main(){
         printf("4* Supprimer des taches \n");
         printf("5* Filtrer les taches selon la priority \n");
         printf("6* Filtrer les taches selon la statut \n");
-        printf("7* Quitter la liste \n");
+        printf("7* order croissant \n");
+        printf("8* order decroissant \n");
+        printf("9* Quitter la liste \n");
         printf("***entrez votre choix : \n");
         scanf("%d",&choix);
+
+        if (lentgh>0 || choix==1){
         switch (choix)
         {
         case 1: printf("\n§§§§§§§§§§§§ Ajouter des taches : §§§§§§§§§§§§ \n");
         ajouter();
         break;
         case 2: printf("§§§§§§§§§§§§ Afficher des info sur les taches : §§§§§§§§§§§§ \n");
-        if (lentgh==0){
-            printf("§§§§§§§§§§§§ Y'a pas des informations merci de resseyer §§§§§§§§§§§§\n\n");
-        }else
-            afficher();
+        afficher();
         break;
         case 3: printf("§§§§§§§§§§§§ Modifier les taches : §§§§§§§§§§§§\n");
-        if (lentgh==0){
-            printf("§§§§§§§§§§§§ Y'a pas des informations merci de resseyer §§§§§§§§§§§§\n\n");
-        }else
-            modifier();
+        modifier();
         break;
         case 4: printf("§§§§§§§§§§§§ Supprimer des taches §§§§§§§§§§§§ :\n");
-        if (lentgh==0){
-            printf("§§§§§§§§§§§§ Y'a pas des informations merci de resseyer §§§§§§§§§§§§\n\n");
-        }else
-            supprimer();
+        supprimer();
         break;
         case 5: printf(" §§§§§§§§§§§§ Filtrer selon la priority §§§§§§§§§§§§ \n");
         filtrer();
@@ -240,13 +279,22 @@ int main(){
          case 6: printf(" §§§§§§§§§§§§ Filtrer selon la statut §§§§§§§§§§§§ \n");
         search();
         break;
-         case 7: printf("§§§§§§§§§§§§ Quitter la liste §§§§§§§§§§§§ \n");
+         case 7: printf(" §§§§§§§§§§§§ Tri croissant §§§§§§§§§§§§ \n");
+        Order();
+        break;
+        case 8: printf(" §§§§§§§§§§§§ Tri decroissant §§§§§§§§§§§§ \n");
+        decroissant();
+         case 9: printf("§§§§§§§§§§§§ Quitter la liste §§§§§§§§§§§§ \n");
         break;
         default: printf("§§§§§§§§§§§§ Entrez un choix depuis la liste afficher §§§§§§§§§§§§\n");
         break;
         }
+        }else{
+             printf("§§§§§§§§§§§§ Y'a pas des informations merci de resseyer §§§§§§§§§§§§\n\n");
         }
 
 
-    return 0;
+
     }
+    return 0;
+}
