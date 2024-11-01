@@ -26,6 +26,24 @@ date timeline ;
 }taches;
 
 taches T[100];
+//validation de date
+void valide(taches T[]){
+    do{
+        printf("jour : ");
+        scanf("%d", &T[n].timeline.jour);
+    }while(T[n].timeline.jour < 1 || T[n].timeline.jour > 31);
+
+    do{
+        printf("mois : ");
+        scanf("%d", &T[n].timeline.mois);
+    }while(T[n].timeline.mois < 1 || T[n].timeline.mois > 12);
+
+    do{
+        printf("annee : ");
+        scanf("%d", &T[n].timeline.annee);
+    }while(T[n].timeline.annee < 2024 );
+
+}
 
 //la fonction qui permet  d'ajouter des taches :
 void ajouter(){
@@ -41,12 +59,7 @@ void ajouter(){
     printf("la statut (complete, incomplete) : ");
     scanf(" %[^\n]s",T[n].statut);
     printf("la date d'%cch%cance : \n",130,130);
-    printf("jour : ");
-    scanf("%d", &T[n].timeline.jour);
-    printf("mois : ");
-    scanf("%d", &T[n].timeline.mois);
-    printf("annee : ");
-    scanf("%d", &T[n].timeline.annee);
+    valide(T);
     lentgh++;
     n=lentgh;
 
@@ -54,13 +67,13 @@ void ajouter(){
 //la fonction qui permet  d'afficher des infos sur les taches :
 void afficher(){
     printf("les informations de(s) t%cche(s) %d : \n",131,i+1);
-    printf("titre\t\tdiscription\t\tpriority\t\tstatut\t\tdate d'echeance\t \n");
+    printf("titre\t\tdiscription\tpriority\tstatut\tdate d'echeance \n");
     for (i=0;i<n;i++){
-    printf("%s \t", T[i].titre);
-    printf("\t%s\t\t", T[i].discription);
-    printf("\t%s\t\t", T[i].priority);
-    printf("\t%s\t\t", T[i].statut);
-    printf("%d/%d/%d\n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
+    printf("%s", T[i].titre);
+    printf("\t\t%s", T[i].discription);
+    printf("\t%s", T[i].priority);
+    printf("\t\t%s", T[i].statut);
+    printf("\t%d/%d/%d\n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
 }
 }
 //la fonction qui permet de modifier des taches
@@ -98,24 +111,36 @@ void modifier(){
         printf("\t 1.jour : \n");
         printf("\t 2.mois : \n");
         printf("\t 3.annee : \n");
+        printf("\t 4.quitter : \n");
         printf("\t ***entrez votre choix : \n");
-        scanf("%d", choixDate);
+        scanf("%d", &choixDate);
         switch (choixDate){
             case 1:
+               do{
                 printf("le nouveau jour est : \n");
                 scanf("%d", &T[i-1].timeline.jour);
+                } while(T[i-1].timeline.jour < 1 || T[i-1].timeline.jour > 31);
             break;
             case 2:
+                do{
                 printf("le nouveau mois est : \n");
                 scanf("%d", &T[i-1].timeline.mois);
+                } while(T[i-1].timeline.mois < 1 || T[i-1].timeline.mois > 12);
+               // valide(T);
             break;
             case 3:
+                do{
                 printf("la nouvelle annee est : \n");
                 scanf("%d", &T[i-1].timeline.annee);
+                }while(T[i-1].timeline.annee < 2024 );
+            break;
+            case 4:
+                printf("\t vous avez quitter la liste ! \n");
             break;
             default: printf("entrez un nombre de puis la liste \n");
             break;
         }
+        break;
         case 6:
             printf("Editer tout \n");
             //editer toutes les infos
