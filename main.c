@@ -21,7 +21,7 @@ typedef struct {
     char titre [100];
     char discription [40];
     char priority [40];
-    char statut [20];
+    char statue [20];
 date timeline ;
 }taches;
 
@@ -54,26 +54,33 @@ void ajouter(){
     scanf(" %[^\n]s", T[n].titre);
     printf("la discription : ");
     scanf(" %[^\n]s", T[n].discription);
-    printf("la priorit%c (high,meduim,low): ",130);
-    scanf(" %[^\n]s", T[n].priority);
-    printf("la statut (complete, incomplete) : ");
-    scanf(" %[^\n]s",T[n].statut);
+    do{
+        printf("la priorit%c (high,meduim,low): ",130);
+        scanf(" %[^\n]s", T[n].priority);
+    } while(strcmp(T[n].priority,"high")!=0  &&              //l'utilisateur doit entrer obligatoirement la priorite valide //
+           strcmp(T[n].priority , "meduim")!=0 &&
+           strcmp(T[n].priority, "low")!=0 );
+    do{
+        printf("la statut (complete, incomplete) : ");
+        scanf(" %[^\n]s",T[n].statue);
+    }while (strcmp(T[n].statue, "complete")!=0 &&             //l'utilisateur doit entrer obligatoirement la statue valide //
+            strcmp(T[n].statue , "incomplete")!=0 );
+
     printf("la date d'%cch%cance : \n",130,130);
-    valide(T);
+    valide(T);                                                    //l'utilisateur doit entrer obligatoirement la date valide //
     lentgh++;
     n=lentgh;
 
 }
 //la fonction qui permet  d'afficher des infos sur les taches :
 void afficher(){
-    printf("les informations de(s) t%cche(s) %d : \n",131,i+1);
-    printf("titre\t\tdiscription\tpriority\tstatut\tdate d'echeance \n");
     for (i=0;i<n;i++){
-    printf("%s", T[i].titre);
-    printf("\t\t%s", T[i].discription);
-    printf("\t%s", T[i].priority);
-    printf("\t\t%s", T[i].statut);
-    printf("\t%d/%d/%d\n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
+    printf("les informations de la tache num %d : \n",i+1);
+    printf("le titre : %s \n", T[i].titre);
+    printf("la discription : %s \n", T[i].discription);
+    printf("la priority : %s \n", T[i].priority);
+    printf("la statut : %s \n", T[i].statue);
+    printf("la date d echeance %d /%d / %d \n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
 }
 }
 //la fonction qui permet de modifier des taches
@@ -88,7 +95,7 @@ void modifier(){
         printf("[1] Editer le titre \n");
         printf("[2] Editer la discription \n");
         printf("[3] Editer la priority \n");
-        printf("[4] Editer la statut \n");
+        printf("[4] Editer la statue \n");
         printf("[5] Editer la date d'echeance \n");
         printf("[6] Editer tout \n");
         printf("[7] Quitter la liste \n");
@@ -102,11 +109,20 @@ void modifier(){
         case 2: printf("entrer la nouvelle discription : \n");
         scanf("%s", T[i-1].discription);
         break;
-        case 3: printf("entrer la nouvelle priority : \n");
-        scanf("%s", T[i-1].priority);
+        case 3:
+            do{
+            printf("entrer la nouvelle priority : \n");
+            scanf("%s", T[i-1].priority);
+            } while(strcmp(T[i-1].priority,"high")!=0  &&
+           strcmp(T[i-1].priority , "meduim")!=0 &&
+           strcmp(T[i-1].priority, "low")!=0 );
         break;
-        case 4: printf("entrer la nouvelle statut : \n");
-        scanf("%s", T[i-1].statut);
+        case 4: do{
+            printf("entrer la nouvelle statue : \n");
+            scanf("%s", T[i-1].statue);
+        }while (strcmp(T[i-1].statue,"complete")!=0  &&
+               strcmp(T[i-1].statue , "incomplete")!=0);
+        break;
         case 5: printf("**Menu de modification date** \n");
         printf("\t 1.jour : \n");
         printf("\t 2.mois : \n");
@@ -150,8 +166,8 @@ void modifier(){
         scanf("%s", T[i-1].discription);
         printf("entrer la nouvelle priority : \n");
         scanf("%s", T[i-1].priority);
-        printf("entrer la nouvelle statut : \n");
-        scanf("%s", T[i-1].statut);
+        printf("entrer la nouvelle statue : \n");
+        scanf("%s", T[i-1].statue);
         printf("le nouveau jour est : \n");
         scanf("%d", &T[i-1].timeline.jour);
         printf("le nouveau mois est : \n");
@@ -193,7 +209,7 @@ void filtrer (){
              printf("le titre : %s \n", T[i].titre);
              printf("la discription : %s \n", T[i].discription);
              printf("la priority : %s \n", T[i].priority);
-             printf("la statut : %s \n", T[i].statut);
+             printf("la statut : %s \n", T[i].statue);
              printf("la date d echeance %d /%d / %d \n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
         found = 1;
         }
@@ -203,26 +219,26 @@ void filtrer (){
 
 }
 }
-//fonction pour filtrer les taches selon la statut//
+//fonction pour filtrer les taches selon la statue//
 void search(){
     char Srecherche[20];
     printf("veuillez entrez la statut de votre tache \n");
     scanf("%s", &Srecherche);
     int found=0;
     for(i=0;i<n;i++){
-        if(strcmp (T[i].statut , Srecherche)==0){
+        if(strcmp (T[i].statue , Srecherche)==0){
              printf("\t tache trouvee !");
              printf("les informations de la tache num %d : \n",i+1);
              printf("le titre : %s \n", T[i].titre);
              printf("la discription : %s \n", T[i].discription);
              printf("la priority : %s \n", T[i].priority);
-             printf("la statut : %s \n", T[i].statut);
+             printf("la statue : %s \n", T[i].statue);
              printf("la date d echeance %d /%d / %d \n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
         found = 1;
     }
 }
         if (found==0){
-     printf("\t Y'a aucune tache avec cette statut \n");
+     printf("\t Y'a aucune tache avec cette statue ! \n");
 }
 }
 
@@ -273,7 +289,7 @@ int main(){
         printf("3* Modifier les taches \n");
         printf("4* Supprimer des taches \n");
         printf("5* Filtrer les taches selon la priority \n");
-        printf("6* Filtrer les taches selon la statut \n");
+        printf("6* Filtrer les taches selon la statue \n");
         printf("7* order croissant \n");
         printf("8* order decroissant \n");
         printf("9* Quitter la liste \n");
@@ -298,7 +314,7 @@ int main(){
         case 5: printf(" §§§§§§§§§§§§ Filtrer selon la priority §§§§§§§§§§§§ \n");
         filtrer();
         break;
-         case 6: printf(" §§§§§§§§§§§§ Filtrer selon la statut §§§§§§§§§§§§ \n");
+         case 6: printf(" §§§§§§§§§§§§ Filtrer selon la statue §§§§§§§§§§§§ \n");
         search();
         break;
          case 7: printf(" §§§§§§§§§§§§ Tri croissant §§§§§§§§§§§§ \n");
