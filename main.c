@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-int lentgh;
+int length=0;
 int i;
 int indice; //l'indice de tache
 int choix=0; //LE MENU
 int n=0;//le nombre  de taches
-int choixEdit;
+int choixEdit; // menu de modification
 int choixDate; //modifier la date
 //declaration des structures :
 //date d'echéance
@@ -48,7 +48,6 @@ void valide(taches T[]){
 //la fonction qui permet  d'ajouter des taches :
 void ajouter(){
 
-    //for (i=0;i<nbrtache;i++)
     printf("donnez les informations de la t%cche num %d : \n",131,n+1);
     printf("le titre : ");
     scanf(" %[^\n]s", T[n].titre);
@@ -68,19 +67,20 @@ void ajouter(){
 
     printf("la date d'%cch%cance : \n",130,130);
     valide(T);                                                    //l'utilisateur doit entrer obligatoirement la date valide //
-    lentgh++;
-    n=lentgh;
+    length++;
+    n=length;
 
 }
 //la fonction qui permet  d'afficher des infos sur les taches :
 void afficher(){
     for (i=0;i<n;i++){
+    printf("-----------------------------------------\n");
     printf("les informations de la tache num %d : \n",i+1);
     printf("le titre : %s \n", T[i].titre);
     printf("la discription : %s \n", T[i].discription);
     printf("la priority : %s \n", T[i].priority);
     printf("la statut : %s \n", T[i].statue);
-    printf("la date d echeance %d /%d / %d \n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
+    printf("la date d echeance : %02d/%02d/%d \n", T[i].timeline.jour, T[i].timeline.mois , T[i].timeline.annee);
 }
 }
 //la fonction qui permet de modifier des taches
@@ -123,7 +123,7 @@ void modifier(){
         }while (strcmp(T[i-1].statue,"complete")!=0  &&
                strcmp(T[i-1].statue , "incomplete")!=0);
         break;
-        case 5: printf("**Menu de modification date** \n");
+        case 5: printf("Menu de modification date \n");
         printf("\t 1.jour : \n");
         printf("\t 2.mois : \n");
         printf("\t 3.annee : \n");
@@ -186,15 +186,19 @@ void modifier(){
 void supprimer(){
     printf("entrez l'indice de tache que vous voulez supprimer : \n");
     scanf("%d",&i);
-        for(i=0;i<lentgh-1;i++){
+     if (i<=0 || i>n){
+    printf("L'indice que vous voulez modifier n'existe pas \n");
+    }else {
+    for(i=0;i<length-1;i++){
             T[i] = T[i+1];
         }
-        lentgh--;
+        length--;
         n--;
     printf(" \t Vous avez supprimer cette tache ! \n");
 
     afficher();
 
+}
 }
 //fonction pour filtrer les taches selon la priorite
 void filtrer (){
@@ -242,6 +246,7 @@ void search(){
 }
 }
 
+//ordinner les taches par order croissant
 void Order(){
     int j;
     taches tmp;
@@ -259,13 +264,14 @@ void Order(){
         }
     }afficher();
 }
+
+//ordinner les taches par order decroissant
 void decroissant(){
     int j;
     taches tmp;
     //tmp; //tmp just pour stocker les données
-    for (i=0;i<
-    n-1;i++){
-        for (j=i+1;j>n;j++){
+    for (i=0;i<n-1;i++){
+        for (j=i+1;j<n;j++){
             if(T[i].timeline.annee < T[j].timeline.annee || T[i].timeline.annee==T[j].timeline.annee
                && T[i].timeline.mois < T[j].timeline.mois || T[i].timeline.mois==T[j].timeline.mois
                 && T[i].timeline.jour < T[j].timeline.jour )
@@ -277,11 +283,24 @@ void decroissant(){
         }
     }afficher();
 }
+void fichier(){
+       FILE *fich  ;
+    fich = fopen("fich.txt","w");
+    for(i=0;i<n;i++){
+        fprintf(fich, "titre : %s \n" , T[i].titre);
+        fprintf(fich, "discription : %s \n" , T[i].discription);
+        fprintf(fich, "priority : %s \n" , T[i].priority);
+        fprintf(fich, "statue : %s \n" , T[i].statue);
+        fprintf(fich , "date d echeance : %d / %d /%d \n", T[i].timeline.jour,T[i].timeline.mois,T[i].timeline.annee);
+
+}
+    fclose(fich);
+}
 
 
 
 int main(){
-    while(choix!=9) {
+    while(choix!=10) {
     printf("################### \t Voici la liste des operations que vous pouvez faire ###################: \n\n");
 
         printf("1* Ajouter des taches \n");
@@ -292,11 +311,12 @@ int main(){
         printf("6* Filtrer les taches selon la statue \n");
         printf("7* order croissant \n");
         printf("8* order decroissant \n");
-        printf("9* Quitter la liste \n");
+        printf("9* enregistrer les infos \n");
+        printf("10* Quitter la liste \n");
         printf("***entrez votre choix : \n");
         scanf("%d",&choix);
 
-        if (lentgh>0 || choix==1){
+        if (length>0 || choix==1){
         switch (choix)
         {
         case 1: printf("\n§§§§§§§§§§§§ Ajouter des taches : §§§§§§§§§§§§ \n");
@@ -322,17 +342,26 @@ int main(){
         break;
         case 8: printf(" §§§§§§§§§§§§ Tri decroissant §§§§§§§§§§§§ \n");
         decroissant();
-         case 9: printf("§§§§§§§§§§§§ Quitter la liste §§§§§§§§§§§§ \n");
+        break;
+        case 9 : printf("§§§§§§§les informations sont enregitrer §§§§§§§§§§§§ \n");
+        fichier();
         break;
         default: printf("§§§§§§§§§§§§ Entrez un choix depuis la liste afficher §§§§§§§§§§§§\n");
         break;
         }
-        }else{
+        }else if(choix !=10 && (length<0 || choix!=1)){
              printf("§§§§§§§§§§§§ Y'a pas des informations merci de resseyer §§§§§§§§§§§§\n\n");
+        }
+        if(choix==10)
+        {printf("§§§§§§§§§§§§ Quitter la liste §§§§§§§§§§§§ \n");
         }
 
 
 
     }
-    return 0;
+
+
+
+
+return 0;
 }
